@@ -3,7 +3,8 @@ public class Produto {
     private int id, quantidade;
     private double valor;
 
-    public Produto () {}
+    public Produto() {
+    }
 
     public Produto(int id, String descricao, int quantidade, double valor) {
         this.id = id;
@@ -11,7 +12,13 @@ public class Produto {
         this.quantidade = quantidade;
         this.valor = valor;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Produto [id=" + id + ", descricao=" + descricao + ", quantidade=" + quantidade + ", valor=" + valor
+                + "]";
+    }
+
     public int getId() {
         return id;
     }

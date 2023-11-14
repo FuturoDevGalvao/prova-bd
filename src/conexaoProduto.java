@@ -1,10 +1,14 @@
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
 public class conexaoProduto extends ConexaoBD {
-    public static void inserir (Produto p) {
+    public static void inserir(Produto p) {
         abrirConexao();
+
         try {
             String sql = "INSERT INTO produto (id, descricao, quantidade, valor) VALUES (?, ?, ?, ?)";
             estado = conn.prepareStatement(sql);
@@ -22,8 +26,9 @@ public class conexaoProduto extends ConexaoBD {
         }
     }
 
-    public static void atualizar (Produto p) {
+    public static void atualizar(Produto p) {
         abrirConexao();
+
         try {
             String sql = "UPDATE produto SET descricao = ?, quantidade = ?, valor = ? WHERE id = ?";
             estado = conn.prepareStatement(sql);
@@ -41,8 +46,9 @@ public class conexaoProduto extends ConexaoBD {
         }
     }
 
-    public static void deletar (Produto p) {
+    public static void deletar(Produto p) {
         abrirConexao();
+
         try {
             String sql = "DELETE FROM produto WHERE id = ?";
             estado = conn.prepareStatement(sql);
@@ -55,5 +61,36 @@ public class conexaoProduto extends ConexaoBD {
         } finally {
             fecharConexao();
         }
+    }
+
+    public static ArrayList<Produto> consultar() {
+        ArrayList<Produto> produtos = new ArrayList<>();
+        ResultSet resultado;
+
+        abrirConexao();
+
+        try {
+            String sql = "SELECT * FROM produto";
+            estado = conn.prepareStatement(sql);
+            resultado = estado.executeQuery();
+
+            while (resultado.next()) {
+                int id = resultado.getInt("id");
+                String descricao = resultado.getString("descricao");
+                int quantidade = resultado.getInt("quantidade");
+                double valor = resultado.getDouble("valor");
+
+                produtos.add(new Produto(id, descricao, quantidade, valor));
+            }
+
+            JOptionPane.showMessageDialog(null, "Consulta efetuada com sucesso.");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao tentar consultar produto(s).");
+            e.printStackTrace();
+        } finally {
+            fecharConexao();
+        }
+
+        return produtos;
     }
 }

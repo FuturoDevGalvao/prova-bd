@@ -1,9 +1,11 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
 public class App {
     private static Scanner input = new Scanner(System.in);
+
     public static void main(String[] args) {
         iniciar();
     }
@@ -13,8 +15,9 @@ public class App {
         String desicao = "";
 
         do {
-            System.out.println("Informe 1: Inserir \nInforme 2: Atualizar \nInforme 3: Deletar");
-       
+            System.out
+                    .println("\nInforme 1: Inserir \nInforme 2: Atualizar \nInforme 3: Deletar\nInforme 4: Consultar");
+
             System.out.print("\nInforme aqui: ");
             int acao = input.nextInt();
             executarAcao(acao);
@@ -24,7 +27,7 @@ public class App {
         } while (desicao.equalsIgnoreCase("S"));
     }
 
-    private static void executarAcao (int acao) {
+    private static void executarAcao(int acao) {
         switch (acao) {
             case 1:
                 conexaoProduto.inserir(getProduto());
@@ -35,14 +38,17 @@ public class App {
             case 3:
                 conexaoProduto.deletar(getProduto());
                 break;
+            case 4:
+                showResult(conexaoProduto.consultar());
+                break;
             default:
                 JOptionPane.showMessageDialog(null, "Ação inválida.");
                 break;
         }
     }
 
-    private static Produto getProduto () {
-        System.out.print("\n<< Informe as informações referentes ao produto >>");
+    private static Produto getProduto() {
+        System.out.println("\n<< Informe as informações referentes ao produto >>");
         System.out.print("\nInforme o id: ");
         int id = input.nextInt();
         System.out.print("Informe a descrição: ");
@@ -54,5 +60,12 @@ public class App {
 
         return new Produto(id, decricao, quantidade, valor);
     }
-    
+
+    private static void showResult(ArrayList<Produto> produtos) {
+        System.out.println("");
+
+        produtos.forEach((produto) -> {
+            System.out.println(produto);
+        });
+    }
 }
